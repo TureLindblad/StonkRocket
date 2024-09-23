@@ -1,0 +1,6 @@
+@StonkRocket.API_HostAddress = http://localhost:5133
+
+GET {{StonkRocket.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
