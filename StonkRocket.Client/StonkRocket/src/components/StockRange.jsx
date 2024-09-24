@@ -8,6 +8,7 @@ const StockRange = () => {
     let timespan = 'day'
     let startDate = '2023-01-09'
     let endDate = '2023-02-10'
+    let id = 0
 
     useEffect(() => {
         fetch(`${config.apiUrl}/aggs/ticker/${stocksTicker}/range/${multiplier}/${timespan}/${startDate}/${endDate}?apiKey=${config.apiKey}`)
@@ -31,9 +32,11 @@ const StockRange = () => {
             <div>
                 <h1><strong>Ticker: </strong>{stonks.ticker}</h1>
                 <ul>
-                    {stonks.results.map(a =>
-                    (
-                        <li>
+                    {stonks.results.map(a => 
+                    {
+                        id++
+                        return(
+                        <li key={id}>
                             <p><strong>Open:</strong> {a.o}</p>
                             <p><strong>High:</strong> {a.h}</p>
                             <p><strong>Low:</strong> {a.l}</p>
@@ -42,7 +45,8 @@ const StockRange = () => {
                             <p><strong>VWAP:</strong> {a.vw}</p>
                             <p><strong>Transactions:</strong> {a.n}</p>
                         </li>
-                    )
+                        )
+                    }
                     )}
                 </ul>
             </div>
