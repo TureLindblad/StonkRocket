@@ -1,5 +1,6 @@
 import './App.css'
 import StockView from './components/StockView.jsx'
+import StockRange from './components/StockRange.jsx'
 
 function App() {
 
@@ -7,6 +8,7 @@ function App() {
     <>
       <div>
         <StockView />
+        <StockRange />
       </div>      
     </>
   )
