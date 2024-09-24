@@ -1,6 +1,6 @@
 ﻿namespace StonkRocket.API.Models
 {
-    public class Stock
+    public record Stock
     {
         public int Id { get; set; }
         public string? Ticker { get; set; }
