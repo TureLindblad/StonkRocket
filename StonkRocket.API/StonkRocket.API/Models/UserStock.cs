@@ -1,10 +1,11 @@
 ﻿namespace StonkRocket.API.Models
 {
-    public record StockDashboard
+    public record UserStock
     {
         public int Id { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
-        public ICollection<Stock> Stocks { get; set; }
+        public int StockId { get; set; }
+        public Stock Stock { get; set; }
     }
 }

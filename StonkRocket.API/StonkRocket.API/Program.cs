@@ -1,13 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using StonkRocket.API.Services;
+using System.Data.Common;
+using System.Security.Cryptography.X509Certificates;
+using StonkRocket.API.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Runtime.InteropServices;
 
 namespace StonkRocket.API
 {
     public class Program
     {
+        public record UserResponse(int Id, string Name, IEnumerable<StockResponse> Stocks);
+        public record StockResponse(int Id, string Ticker, double Open);
         public static void Main(string[] args)
         {
-            /*var d = new ApplicationDbContextFactory();*/
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -32,35 +38,21 @@ namespace StonkRocket.API
 
             app.MapGet("/dashboard/user/{id}", (AppDbContext db, int id) =>
             {
-                var user = db.Users.FirstOrDefault(u => u.Id == $"{id}");
+                var user = db.Users
+                    .Include(user => user.UserStocks)
+                    .ThenInclude(userStocks => userStocks.Stock)
+                    .FirstOrDefault(user => user.Id == id);
 
                 if (user == null) return Results.NotFound();
 
-                var dashboard = db.StockDashboards
-                                  .Include(sd => sd.Stocks)
-                                  .FirstOrDefault(st => st.Id == 1);
+                var response = new UserResponse(user.Id, user.Name, user.UserStocks.Select(
+                    us => new StockResponse(
+                        us.Stock.Id, 
+                        us.Stock.Ticker, 
+                        us.Stock.Open)
+                    ).ToList());
 
-                if (dashboard == null) return Results.NotFound("Dashboard not found");
-
-                var stocks = dashboard.Stocks.Select(stock => new Models.Stock
-                {
-                    Id = stock.Id,
-                    Ticker = stock.Ticker,
-                    Open = stock.Open,
-                    High = stock.High,
-                    Low = stock.Low,
-                    Close = stock.Close,
-                    Volume = stock.Volume,
-                    VolumeWeightedAveragePrice = stock.VolumeWeightedAveragePrice,
-                    Transactions = stock.Transactions
-                }).ToList();
-
-                user.StockDashboard = new Models.StockDashboard
-                {
-                    Stocks = stocks
-                };
-
-                return Results.Ok(user);
+                return Results.Ok(response);
             });
 
             app.UseAuthorization();

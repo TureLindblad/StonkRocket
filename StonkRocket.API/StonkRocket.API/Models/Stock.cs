@@ -11,6 +11,6 @@
         public double Volume { get; set; }
         public double VolumeWeightedAveragePrice { get; set; }
         public int Transactions { get; set; }
-        public ICollection<StockDashboard> StockDashboards { get; set; }
+        public ICollection<UserStock> UserStocks { get; set; }
     }
 }

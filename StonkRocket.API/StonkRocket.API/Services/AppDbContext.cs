@@ -8,7 +8,7 @@ namespace StonkRocket.API.Services
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Stock> Stocks { get; set; }
-        public DbSet<StockDashboard> StockDashboards { get; set; }
+        public DbSet<UserStock> UserStocks { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     }
 }

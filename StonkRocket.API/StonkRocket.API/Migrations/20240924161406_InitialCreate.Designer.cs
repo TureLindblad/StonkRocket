@@ -10,7 +10,7 @@ using StonkRocket.API.Services;
 namespace StonkRocket.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240924131959_InitialCreate")]
+    [Migration("20240924161406_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -18,21 +18,6 @@ namespace StonkRocket.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
-
-            modelBuilder.Entity("StockStockDashboard", b =>
-                {
-                    b.Property<int>("StockDashboardsId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("StocksId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("StockDashboardsId", "StocksId");
-
-                    b.HasIndex("StocksId");
-
-                    b.ToTable("StockStockDashboard");
-                });
 
             modelBuilder.Entity("StonkRocket.API.Models.Stock", b =>
                 {
@@ -69,10 +54,28 @@ namespace StonkRocket.API.Migrations
                     b.ToTable("Stocks");
                 });
 
-            modelBuilder.Entity("StonkRocket.API.Models.StockDashboard", b =>
+            modelBuilder.Entity("StonkRocket.API.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("StonkRocket.API.Models.UserStock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StockId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("UserId")
@@ -80,59 +83,40 @@ namespace StonkRocket.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StockDashboards");
+                    b.HasIndex("StockId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserStocks");
+                });
+
+            modelBuilder.Entity("StonkRocket.API.Models.UserStock", b =>
+                {
+                    b.HasOne("StonkRocket.API.Models.Stock", "Stock")
+                        .WithMany("UserStocks")
+                        .HasForeignKey("StockId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StonkRocket.API.Models.User", "User")
+                        .WithMany("UserStocks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Stock");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("StonkRocket.API.Models.Stock", b =>
+                {
+                    b.Navigation("UserStocks");
                 });
 
             modelBuilder.Entity("StonkRocket.API.Models.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("StockDashboardId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StockDashboardId")
-                        .IsUnique();
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("StockStockDashboard", b =>
-                {
-                    b.HasOne("StonkRocket.API.Models.StockDashboard", null)
-                        .WithMany()
-                        .HasForeignKey("StockDashboardsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StonkRocket.API.Models.Stock", null)
-                        .WithMany()
-                        .HasForeignKey("StocksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("StonkRocket.API.Models.User", b =>
-                {
-                    b.HasOne("StonkRocket.API.Models.StockDashboard", "StockDashboard")
-                        .WithOne("User")
-                        .HasForeignKey("StonkRocket.API.Models.User", "StockDashboardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("StockDashboard");
-                });
-
-            modelBuilder.Entity("StonkRocket.API.Models.StockDashboard", b =>
-                {
-                    b.Navigation("User")
-                        .IsRequired();
+                    b.Navigation("UserStocks");
                 });
 #pragma warning restore 612, 618
         }

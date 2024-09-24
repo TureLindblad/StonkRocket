@@ -11,19 +11,6 @@ namespace StonkRocket.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "StockDashboards",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StockDashboards", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Stocks",
                 columns: table => new
                 {
@@ -47,71 +34,63 @@ namespace StonkRocket.API.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    StockDashboardId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_StockDashboards_StockDashboardId",
-                        column: x => x.StockDashboardId,
-                        principalTable: "StockDashboards",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "StockStockDashboard",
+                name: "UserStocks",
                 columns: table => new
                 {
-                    StockDashboardsId = table.Column<int>(type: "INTEGER", nullable: false),
-                    StocksId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    StockId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StockStockDashboard", x => new { x.StockDashboardsId, x.StocksId });
+                    table.PrimaryKey("PK_UserStocks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StockStockDashboard_StockDashboards_StockDashboardsId",
-                        column: x => x.StockDashboardsId,
-                        principalTable: "StockDashboards",
+                        name: "FK_UserStocks_Stocks_StockId",
+                        column: x => x.StockId,
+                        principalTable: "Stocks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StockStockDashboard_Stocks_StocksId",
-                        column: x => x.StocksId,
-                        principalTable: "Stocks",
+                        name: "FK_UserStocks_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_StockStockDashboard_StocksId",
-                table: "StockStockDashboard",
-                column: "StocksId");
+                name: "IX_UserStocks_StockId",
+                table: "UserStocks",
+                column: "StockId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_StockDashboardId",
-                table: "Users",
-                column: "StockDashboardId",
-                unique: true);
+                name: "IX_UserStocks_UserId",
+                table: "UserStocks",
+                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "StockStockDashboard");
-
-            migrationBuilder.DropTable(
-                name: "Users");
+                name: "UserStocks");
 
             migrationBuilder.DropTable(
                 name: "Stocks");
 
             migrationBuilder.DropTable(
-                name: "StockDashboards");
+                name: "Users");
         }
     }
 }

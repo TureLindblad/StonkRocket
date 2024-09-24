@@ -2,9 +2,8 @@
 {
     public record User
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public int StockDashboardId { get; set; }
-        public StockDashboard StockDashboard { get; set; }
+        public ICollection<UserStock> UserStocks { get; set; }
     }
 }
