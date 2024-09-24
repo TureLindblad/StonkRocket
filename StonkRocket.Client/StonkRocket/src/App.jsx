@@ -1,12 +1,12 @@
 import './App.css'
-import StockList from './components/StockList.jsx'
+import StockView from './components/StockView.jsx'
 
 function App() {
 
   return (
     <>
       <div>
-        <StockList />
+        <StockView />
       </div>      
     </>
   )
