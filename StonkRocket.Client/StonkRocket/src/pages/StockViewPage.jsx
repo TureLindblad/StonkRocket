@@ -15,9 +15,11 @@ const StockViewPage = () => {
     useEffect( () => {
         fetch(`${config.apiUrl}/aggs/ticker/${search}/prev?apiKey=${config.apiKey}`)
         .then(response => {
-            return response.json()})
+            return response.json()
+        })
         .then(data => {
-            setStock(data)})
+            setStock(data)
+        })
         .catch(error => console.log('Error loading data', error))
         }, [])
 
