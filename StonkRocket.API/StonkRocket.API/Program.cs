@@ -28,6 +28,14 @@ namespace StonkRocket.API
 
             builder.Services.AddScoped<IUsersService, UsersService>();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("allowAll", policy => policy
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -35,6 +43,7 @@ namespace StonkRocket.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.UseCors("allowAll");
             }
 
             app.UseHttpsRedirection();
