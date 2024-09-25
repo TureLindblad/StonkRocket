@@ -5,7 +5,7 @@ function MainPage(){
     return(
         <div>
             <Navbar />
-            <StockRange />
+            {/* <StockRange /> */}
         </div>
     )
 }

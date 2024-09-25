@@ -8,9 +8,9 @@ const SearchComponent = () =>{
     const handleInput = (e) =>{
         setInput(e.target.value)
     }
-    const handleSubmit = () =>{
-        e.preventDefault();
-        navigate(`/stockviewpage?search=${e.target.value}`)
+    const handleSubmit = (e) =>{
+        e.preventDefault()
+        navigate(`/stockviewpage?search=${input}`)
     }
 
     return(
