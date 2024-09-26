@@ -1,11 +1,11 @@
 import Navbar from "../components/NavBar";
-import StockRange from "../components/StockRange";
+import StockList from "../components/StockList";
 
 function MainPage(){
     return(
         <div>
             <Navbar />
-            {/* <StockRange /> */}
+            <StockList />
         </div>
     )
 }

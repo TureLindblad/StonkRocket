@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import config from "../config.js";
 
-const StockRange = () => {
+const StockRange = ({ ticker }) => {
     const [stonks, setStonks] = useState();
-    let stocksTicker = 'AAPL'
+    let stocksTicker = ticker
     let multiplier = 1
     let timespan = 'day'
     let startDate = '2023-01-09'

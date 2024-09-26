@@ -1,6 +1,10 @@
 import config from "../config"
+import StockRange from "../components/StockRange";
+import { useState } from "react";
 
 const StockView = ({ stock }) => {
+    const [showGraph, setShowGraph] = useState(false)
+    
     if (!stock) {
         return(
             <div>Loading</div>)
@@ -27,7 +31,10 @@ const StockView = ({ stock }) => {
             <p><strong>VWAP:</strong> {stock.results[0].vw}</p>
             <p><strong>Transactions:</strong> {stock.results[0].n}</p>
 
+            {showGraph && <StockRange ticker={stock.results[0].T} />}
+
             <button onClick={handleFollow}>Follow stock</button>
+            <button onClick={() => setShowGraph(prev => !prev)}>Toggle Graph</button>
         </div>
     )
 }

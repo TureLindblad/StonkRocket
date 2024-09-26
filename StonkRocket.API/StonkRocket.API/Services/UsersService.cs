@@ -32,6 +32,15 @@ namespace StonkRocket.API.Services
             return TypedResults.Ok(response);
         }
 
+        public IResult GetStocks() // Change to typed result??
+        {
+            var stocks = _dbContext.Stocks;
+
+            var response = stocks.Select(stock => new StockResponse(stock.Id, stock.Ticker)).ToList();
+
+            return TypedResults.Ok(new GetStocksResponse(response));
+        }
+
         public Results<Ok, NotFound, BadRequest, ProblemHttpResult> PostUserStock(string ticker, int userId)
         {
             var results = UserStockHandler(ticker, userId, "Add");

@@ -52,6 +52,9 @@ namespace StonkRocket.API
             app.MapGet("/user/{id}", (IUsersService usersService, int id) 
                 => usersService.GetUserByID(id));
 
+            app.MapGet("/stocks", (IUsersService usersService)
+                => usersService.GetStocks());
+
             app.MapPost("/user/stocks/{id}", (IUsersService userService, 
                 int id, 
                 [FromBody] PostUserStockRequest stockRequest) 
