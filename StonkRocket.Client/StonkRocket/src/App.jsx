@@ -2,6 +2,7 @@ import './App.css'
 import MainPage from './pages/MainPage.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import StockViewPage from './pages/StockViewPage.jsx'
+import DashboardPage from './pages/DashboardPage.jsx';
 
 
 function App() {
@@ -11,7 +12,8 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/stockviewpage" element={<StockViewPage />} />
-      </Routes>      
+        <Route path="/dashboard" element={<DashboardPage />} />
+      </Routes>
     </Router>
   )
 }
