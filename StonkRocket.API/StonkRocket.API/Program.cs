@@ -54,7 +54,10 @@ namespace StonkRocket.API
             app.MapPost("/user/stocks/{id}", (IUsersService userService, 
                 int id, 
                 [FromBody] PostUserStockRequest stockRequest) 
-                => userService.UpdateUserStocks(stockRequest.StockId, id));
+                => userService.UpdateUserStocks(stockRequest.Ticker, id));
+
+            app.MapPost("/stock/{ticker}", (IUsersService userService, string ticker)
+                => userService.PostStock(ticker));
 
             app.UseAuthorization();
 

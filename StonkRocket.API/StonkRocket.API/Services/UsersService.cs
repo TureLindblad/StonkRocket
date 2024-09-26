@@ -26,14 +26,13 @@ namespace StonkRocket.API.Services
             var response = new GetUserByIdResponse(user.Id, user.Name, user.UserStocks.Select(
                 us => new StockResponse(
                     us.Stock.Id,
-                    us.Stock.Ticker,
-                    us.Stock.Open)
+                    us.Stock.Ticker)
                 ).ToList());
 
             return TypedResults.Ok(response);
         }
 
-        public Results<Ok, NotFound, BadRequest> UpdateUserStocks(int stockId, int userId)
+        public Results<Ok, NotFound, BadRequest> UpdateUserStocks(string ticker, int userId)
         {
             var user = _dbContext.Users
                 .Include(user => user.UserStocks)
@@ -42,20 +41,44 @@ namespace StonkRocket.API.Services
 
             if (user == null) return TypedResults.NotFound();
 
-            var existingStock = _dbContext.Stocks.Any(s => s.Id == stockId);
+            var existingStock = _dbContext.Stocks.Any(s => s.Ticker == ticker);
 
             if (!existingStock) return TypedResults.BadRequest(); 
 
-            var hasStock = user.UserStocks.Any(us => us.Stock.Id == stockId);
+            var hasStock = user.UserStocks.Any(us => us.Stock.Ticker == ticker);
 
             if (hasStock) return TypedResults.BadRequest();
 
-            _dbContext.UserStocks.Add( new UserStock { UserId = userId, StockId = stockId } );
+            var stock = _dbContext.Stocks.FirstOrDefault(s => s.Ticker == ticker);
+
+            _dbContext.UserStocks.Add( new UserStock { UserId = userId, StockId = stock.Id } );
 
             _dbContext.SaveChanges();
 
             return TypedResults.Ok();
 
+        }
+
+        public Results<Ok, NoContent> PostStock(string ticker)
+        {
+            // This function does not ensure that the stock exists on polygon
+            // Due to limitations on API key for requests
+            var existingStock = _dbContext.Stocks.Any(a => a.Ticker == ticker);
+
+            if(existingStock)
+            {
+                return TypedResults.NoContent();
+            }
+
+            var newStock = new Stock
+            {
+                Ticker = ticker,
+            };
+
+            _dbContext.Stocks.Add(newStock);
+            _dbContext.SaveChanges();
+
+            return TypedResults.Ok();
         }
     }
 }
