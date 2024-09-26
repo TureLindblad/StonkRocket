@@ -12,7 +12,7 @@ const StockView = ({ stock }) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(stock.results[0].T)
+            body: JSON.stringify({ Ticker: stock.results[0].T })
         })
     }
 
