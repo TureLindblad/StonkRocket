@@ -1,15 +1,23 @@
 import SearchComponent from "./SearchComponent";
 import { Link } from "react-router-dom";
-
+import StonkRocket from "../assets/images/StonkRocket.png"
+import "../styling/Navbar.css"
 const Navbar = () => {
-    const navbarStyle = {
-        backgroundColor: "grey"
-    }
-    return(
-        <nav style={navbarStyle}><SearchComponent />
-        <p>navbar</p>
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/">Main Page</Link>
+
+    return (
+        <nav className="navbar">
+            <img src={StonkRocket} alt="StonkRocketLogo" className="logo"></img>
+            <SearchComponent />
+            <div className="menu-container">
+                <input type="checkbox" id="menu-toggle" className="menu-toggle-checkbox" />
+                <label htmlFor="menu-toggle" className="menu-toggle-label">
+                    ☰
+                </label>
+                <nav className="pageLinks">
+                    <Link to="/dashboard">Dashboard</Link>
+                    <Link to="/">Main Page</Link>
+                </nav>
+            </div>
         </nav>
     )
 }

@@ -19,9 +19,9 @@ const SearchComponent = () =>{
             type="text"
             value={input}
             onChange={handleInput}
-            placeholder="Skriv in ticker för aktie"
+            placeholder=" Ange Ticker"
             />
-            <button type="submit">sök</button>
+            <button type="submit" >Sök</button>
 
         </form>
     )

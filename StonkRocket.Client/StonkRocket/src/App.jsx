@@ -1,4 +1,4 @@
-import './App.css'
+import './styling/App.css'
 import MainPage from './pages/MainPage.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import StockViewPage from './pages/StockViewPage.jsx'

@@ -1,0 +1,134 @@
+.logo {
+    height: 4em;
+    margin-left: 10px;
+    will-change: filter;
+    transition: filter 300ms;
+    border-radius: 100px;
+}
+
+input {
+    font-size: calc(1vw + 1vh);
+    width: calc(26vw + 15px);
+    max-width: 50vw;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right, #17146c, #76b2ef);
+    height: 10vh;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pageLinks {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar button {
+    position: relative;
+    background-color: #0a4e75;
+    border: none;
+    font-size: 19px;
+    color: #FFFFFF;
+    padding: 5px;
+    height: 35px;
+    width: calc(20 vw + 10px);
+    max-width: 50vw;
+    text-align: center;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+.navbar button:after {
+    content: "";
+    background: #90EE90;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px !important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.8s
+}
+
+.navbar button:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
+}
+
+input {
+    height: 30px;
+    border-radius: 10px;
+    font-size: 19px;
+}
+
+@media (max-width: 600px) {
+
+    button {
+        margin-left: 5px;
+    }
+
+}
+
+.menu-container {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pageLinks {
+    display: flex;
+    gap: 1rem;
+}
+
+.pageLinks {
+    display: flex;
+}
+
+.menu-toggle-checkbox {
+    display: none;
+}
+
+.menu-toggle-label {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 15px;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle-label {
+        display: block;
+    }
+
+    .pageLinks {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 55px;
+        right: 0;
+        background: rgb(196, 214, 228);
+        border: 1px solid #070606;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    .menu-toggle-checkbox:checked+.menu-toggle-label+.pageLinks {
+        display: flex;
+    }
+}
