@@ -32,7 +32,21 @@ namespace StonkRocket.API.Services
             return TypedResults.Ok(response);
         }
 
-        public Results<Ok, NotFound, BadRequest> UpdateUserStocks(string ticker, int userId)
+        public Results<Ok, NotFound, BadRequest, ProblemHttpResult> PostUserStock(string ticker, int userId)
+        {
+            var results = UserStockHandler(ticker, userId, "Add");
+
+            return results;
+        }
+
+        public Results<Ok, NotFound, BadRequest, ProblemHttpResult> DeleteUserStock(string ticker, int userId)
+        {
+            var results = UserStockHandler(ticker, userId, "Delete");
+
+            return results;
+        }
+
+        private Results<Ok, NotFound, BadRequest, ProblemHttpResult> UserStockHandler(string ticker, int userId, string action)
         {
             var user = _dbContext.Users
                 .Include(user => user.UserStocks)
@@ -43,15 +57,27 @@ namespace StonkRocket.API.Services
 
             var existingStock = _dbContext.Stocks.Any(s => s.Ticker == ticker);
 
-            if (!existingStock) return TypedResults.BadRequest(); 
+            if (!existingStock && action == "Add") return TypedResults.BadRequest();
 
             var hasStock = user.UserStocks.Any(us => us.Stock.Ticker == ticker);
 
-            if (hasStock) return TypedResults.BadRequest();
+            if (hasStock && action == "Add") return TypedResults.BadRequest();
 
             var stock = _dbContext.Stocks.FirstOrDefault(s => s.Ticker == ticker);
 
-            _dbContext.UserStocks.Add( new UserStock { UserId = userId, StockId = stock.Id } );
+            if (action == "Add") 
+            {
+                _dbContext.UserStocks.Add(new UserStock { UserId = userId, StockId = stock.Id });
+            }
+            else if (action == "Delete")
+            {
+                // Needs error handling
+                _dbContext.UserStocks.Remove(_dbContext.UserStocks.FirstOrDefault(us => us.Stock.Ticker == ticker));
+            }
+            else
+            {
+                return TypedResults.Problem("", statusCode: 500);
+            }
 
             _dbContext.SaveChanges();
 

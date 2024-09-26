@@ -43,8 +43,9 @@ namespace StonkRocket.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                app.UseCors("allowAll");
             }
+
+            app.UseCors("allowAll");
 
             app.UseHttpsRedirection();
 
@@ -54,10 +55,19 @@ namespace StonkRocket.API
             app.MapPost("/user/stocks/{id}", (IUsersService userService, 
                 int id, 
                 [FromBody] PostUserStockRequest stockRequest) 
-                => userService.UpdateUserStocks(stockRequest.Ticker, id));
+                => userService.PostUserStock(stockRequest.Ticker, id));
 
             app.MapPost("/stock/{ticker}", (IUsersService userService, string ticker)
                 => userService.PostStock(ticker));
+
+            app.MapDelete("/user/stocks/{id}", (IUsersService userService,
+                int id,
+                HttpContext httpContext)
+                => 
+                {
+                    var ticker = httpContext.Request.Query["ticker"].ToString();
+                    userService.DeleteUserStock(ticker, id);
+                });
 
             app.UseAuthorization();
 
