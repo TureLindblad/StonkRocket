@@ -7,20 +7,44 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const StockRange = ({ ticker }) => {
     const [stonks, setStonks] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const multiplier = 1;
     const timespan = 'day';
     const startDate = '2023-01-09';
     const endDate = '2023-02-10';
 
     useEffect(() => {
+        setLoading(true);
+        setError(null);
+
         fetch(`${config.apiUrl}/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${startDate}/${endDate}?apiKey=${config.apiKey}`)
-            .then(response => response.json())
-            .then(data => setStonks(data))
-            .catch(error => console.log('Error loading data', error));
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Något gick fel vid hämtning av data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setStonks(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                setError(error.message);
+                setLoading(false); 
+            });
     }, [ticker]);
 
-    if (!stonks) {
+    if (loading) {
         return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error loading data: {error}</div>;
+    }
+
+    if (!stonks || !stonks.results) {
+        return <div>No data available</div>;
     }
     const formatDate = (timestamp) => {
         const date = new Date(timestamp);
