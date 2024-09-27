@@ -1,13 +1,12 @@
 import SearchComponent from "./SearchComponent";
 import { Link } from "react-router-dom";
-import StonkRocket from "../../public/StonkRocket.png"
 import "../styling/Navbar.css"
-const Navbar = () => {
 
+const Navbar = () => {
     return (
         <nav className="navbar">
             <Link to="/">
-                <img src={StonkRocket} alt="StonkRocketLogo" className="logo"></img>
+                <img src="/StonkRocket.png" alt="StonkRocketLogo" className="logo"></img>
             </Link>
             <SearchComponent />
             <div className="menu-container">
