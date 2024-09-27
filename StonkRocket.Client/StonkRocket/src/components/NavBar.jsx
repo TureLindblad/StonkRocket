@@ -6,7 +6,9 @@ const Navbar = () => {
 
     return (
         <nav className="navbar">
-            <img src={StonkRocket} alt="StonkRocketLogo" className="logo"></img>
+            <Link to="/">
+                <img src={StonkRocket} alt="StonkRocketLogo" className="logo"></img>
+            </Link>
             <SearchComponent />
             <div className="menu-container">
                 <input type="checkbox" id="menu-toggle" className="menu-toggle-checkbox" />

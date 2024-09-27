@@ -21,29 +21,37 @@ const StockViewPage = () => {
             return response.json()
         })
         .then(data => {
-            setStock(data)
-            updateDb(data.results[0].T)
+            if (data.results) {
+                setStock(data)
+                updateDb(data.results[0].T)
+            } else {
+                setStock(null)
+            }
         })
         .catch(error => console.log('Error loading data', error))
         }, [search])
 
-        const updateDb = (ticker) => {
-            fetch(`${config.stonkRocketApiUrl}/stock/${ticker}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ ticker })
-            })
-            .catch(error => {
-                console.error('Error updating database:', error);
-            });
-        };
+    const updateDb = (ticker) => {
+        fetch(`${config.stonkRocketApiUrl}/stock/${ticker}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ticker })
+        })
+        .catch(error => {
+            console.error('Error updating database:', error);
+        });
+    };
 
     return(
         <div>
             <Navbar />
-            <StockView stock={stock} />
+            {stock ? 
+                <StockView stock={stock} />
+                :
+                <h1>Stock not found</h1>
+            }
         </div>
     )
 }

@@ -27,13 +27,9 @@ const SearchComponent = () => {
     }, [])
 
     useEffect(() => {
-        if (input) {
-            setViewSuggestions(true)
-        } else {
-            setViewSuggestions(false)
-        }
+        input ? setViewSuggestions(true) : setViewSuggestions(false)
 
-        const filter = tickers.filter(ticker => ticker.toLowerCase().includes(input.toLowerCase()))
+        const filter = tickers.filter(ticker => ticker.toUpperCase().includes(input.toUpperCase()))
         setSuggestions(filter)
     }, [input])
 
@@ -42,7 +38,8 @@ const SearchComponent = () => {
     }
     const handleSubmit = (e) =>{
         e.preventDefault()
-        navigate(`/stockviewpage?search=${input}`)
+        setInput('')
+        navigate(`/stockviewpage?search=${input.toUpperCase()}`)
     }
 
     return(
@@ -57,7 +54,11 @@ const SearchComponent = () => {
             {viewSuggestions && suggestions.length > 0 && 
                 <div className="suggestions">
                     {suggestions.map((suggestion) => (
-                        <Link key={suggestion} to={`/stockviewpage?search=${suggestion}`}>
+                        <Link 
+                            key={suggestion}
+                            to={`/stockviewpage?search=${suggestion}`}
+                            onClick={() => setInput('')}
+                        >
                             {suggestion}
                         </Link>
                     ))}

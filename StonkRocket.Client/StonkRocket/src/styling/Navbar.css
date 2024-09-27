@@ -27,6 +27,20 @@ input {
     flex-direction: column;
 }
 
+.pageLinks a {
+    padding: 5px 8px;
+    text-decoration: none;
+    color: #007bff;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pageLinks a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
 .navbar button {
     position: relative;
     background-color: #0a4e75;

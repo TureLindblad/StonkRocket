@@ -44,7 +44,7 @@ const StockList = () => {
 
     return (
         <div>
-            <h1 style={{ textAlign: "center" }}> List of popular stocks</h1>
+            <h1> List of popular stocks</h1>
             <ul className="stockList">
                 {listItems}
             </ul>
