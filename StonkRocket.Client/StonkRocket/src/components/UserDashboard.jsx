@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import config from "../config"
 import { useNavigate } from 'react-router-dom';
+import "../styling/DashBoardList.css"
+
 
 const UserDashboard = () => {
     const [user, setUser] = useState()
@@ -50,19 +52,25 @@ const UserDashboard = () => {
     }
 
     const listItems = user.stocks.map((stock) =>
+        <ul className="dashBoardList">
         <li
             key={stock.ticker}
         >
             <span onClick={() => handleClick(stock.ticker)}
                 style={{
                     cursor: 'pointer',
-                    padding: '10px',
-                    transition: 'background-color 0.3s ease, color 0.3s ease'
+                    transition: 'background-color 0.3s ease, color 0.3s ease',
+                    verticalAlign: 'middle',
+                    position: 'absolute',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    fontSize: '25px',
                 }}>
                 {stock.ticker}
             </span>
-            <button onClick={() => removeFavourite(stock.ticker)}>Remove Favourite</button>
+            <button class="dashBoardButton" onClick={() => removeFavourite(stock.ticker)}><i class="fa fa-trash"></i> Remove</button>
         </li>
+        </ul>
 
 
     );

@@ -1,6 +1,6 @@
 import SearchComponent from "./SearchComponent";
 import { Link } from "react-router-dom";
-import StonkRocket from "../assets/images/StonkRocket.png"
+import StonkRocket from "../../public/StonkRocket.png"
 import "../styling/Navbar.css"
 const Navbar = () => {
 
