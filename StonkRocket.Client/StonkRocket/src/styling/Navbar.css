@@ -17,7 +17,7 @@ input {
     align-items: center;
     justify-content: space-between;
     background: linear-gradient(to right, #17146c, #76b2ef);
-    min-height: 4.2em;
+    min-height: 5em;
     max-height: 15vh;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }

@@ -92,7 +92,7 @@ const StockRange = ({ ticker }) => {
 
     return (
         <div>
-            <h1><strong>Ticker:</strong> {stonks.ticker}</h1>
+            <h1><strong>Graph:</strong> {stonks.ticker}</h1>
             <Bar data={data} options={options} />
         </div>
     );
