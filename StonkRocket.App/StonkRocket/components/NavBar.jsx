@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, CheckBox } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import SearchComponent from './SearchComponent';
 
 const Navbar = () => {
     const navigation = useNavigation();
@@ -11,9 +12,8 @@ const Navbar = () => {
                 <Image source={require('../assets/StonkRocket.png')} style={styles.logo} />
             </TouchableOpacity>
 
-            {/* Assuming SearchComponent and Login are already converted to React Native */}
-            {/* <SearchComponent />
-            <Login /> */}
+            <SearchComponent />
+            {/* <Login /> */}
 
             <View style={styles.menuContainer}>
                 <TouchableOpacity>

@@ -1,9 +1,7 @@
-import { useState, useEffect } from "react";
-import config from "../config.js";
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+import React, { useState, useEffect } from 'react';
+import { View, Text, ActivityIndicator, Alert } from 'react-native';
+import { BarChart } from 'react-native-chart-kit';
+import config from '../config.js';
 
 const StockRange = ({ ticker }) => {
     const [stonks, setStonks] = useState();
@@ -36,16 +34,26 @@ const StockRange = ({ ticker }) => {
     }, [ticker]);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
     }
 
     if (error) {
-        return <div>Error loading data: {error}</div>;
+        Alert.alert("Error", `Error loading data: ${error}`);
+        return null;
     }
 
     if (!stonks || !stonks.results) {
-        return <div>No data available</div>;
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>No data available</Text>
+            </View>
+        );
     }
+
     const formatDate = (timestamp) => {
         const date = new Date(timestamp);
         return date.toISOString().split('T')[0];
@@ -59,66 +67,40 @@ const StockRange = ({ ticker }) => {
         datasets: [{
             label: 'Close Price',
             data: closePrices,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 5,
-
+            color: (opacity = 1) => `rgba(75, 192, 192, ${opacity})`, 
+            strokeWidth: 2 
         }],
     };
 
-    const options = {
-        responsive: true,
-        layout: {
-            padding: {
-                top: 20,
-                right: 20,
-                bottom: 20,
-                left: 20
-            }
-        },
-        plugins: {
-            legend: {
-                position: 'top',
-                labels: {
-                    padding: 20
-                }
-            },
-            tooltip: {
-                callbacks: {
-                    label: function (context) {
-                        return `Close: ${context.raw}`;
-                    }
-                }
-            }
-        },
-        scales: {
-            x: {
-                ticks: {
-                    autoSkip: true,
-                    maxTicksLimit: 20,
-                    padding: 10
-                },
-                grid: {
-                    display: false
-                }
-            },
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    padding: 10
-                },
-                grid: {
-                    drawBorder: false
-                }
-            }
-        }
-    };
-
     return (
-        <div>
-            <h1><strong>Graph:</strong> {stonks.ticker}</h1>
-            <Bar data={data} options={options} />
-        </div>
+        <View>
+            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Graph: {stonks.ticker}</Text>
+            <BarChart
+                data={data}
+                width={400} 
+                height={220}
+                chartConfig={{
+                    backgroundColor: '#ffffff',
+                    backgroundGradientFrom: '#ffffff',
+                    backgroundGradientTo: '#ffffff',
+                    decimalPlaces: 2,
+                    color: (opacity = 1) => `rgba(75, 192, 192, ${opacity})`,
+                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                    style: {
+                        borderRadius: 16
+                    },
+                    propsForLabels: {
+                        fill: 'black',
+                    },
+                    paddingLeft: 20 
+                }}
+                style={{
+                    marginVertical: 8,
+                    borderRadius: 16,
+                }}
+                withInnerLines={false}
+            />
+        </View>
     );
 };
 

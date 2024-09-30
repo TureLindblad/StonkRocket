@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from 'react-router-dom';
+import { View, TextInput, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 import config from "../config"
-import "../styling/Searchbar.css"
+import { useNavigation } from '@react-navigation/native';
 
 const SearchComponent = () => {
     const [input, setInput] = useState('');
     const [tickers, setTickers] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
     const [viewSuggestions, setViewSuggestions] = useState(false);
-    const navigate = useNavigate();
+    const navigation = useNavigation();
 
     useEffect(() => {
         fetch(`${config.stonkRocketApiUrl}/stocks`)
@@ -33,41 +33,75 @@ const SearchComponent = () => {
         setSuggestions(filter)
     }, [input])
 
-    const handleInput = (e) =>{
-        setInput(e.target.value)
-    }
-    const handleSubmit = (e) =>{
-        e.preventDefault()
-        setInput('')
-        navigate(`/stockviewpage?search=${input.toUpperCase()}`)
-    }
+    const handleInput = (text) => {
+        setInput(text);
+    };
 
-    return(
-        <form onSubmit={handleSubmit}>
-            <input 
-                type="text"
+    const handleSubmit = () => {
+        setInput('');
+        navigation.navigate('StockViewPage', { search: input.toUpperCase() });
+    };
+
+    const renderSuggestion = ({ item }) => (
+        <TouchableOpacity
+            key={item}
+            style={styles.suggestion}
+            onPress={() => {
+                setInput('');
+                navigation.navigate('StockViewPage', { search: item });
+            }}
+        >
+            <Text>{item}</Text>
+        </TouchableOpacity>
+    );
+
+    return (
+        <View style={styles.container}>
+            <TextInput
+                style={styles.input}
                 value={input}
-                onChange={handleInput}
-                placeholder="search ticker..."
+                onChangeText={handleInput}
+                placeholder="Search ticker..."
             />
+            {viewSuggestions && suggestions.length > 0 && (
+                <FlatList
+                    data={suggestions}
+                    keyExtractor={(item) => item}
+                    renderItem={renderSuggestion}
+                />
+            )}
+            <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+                <Text style={styles.buttonText}>Search</Text>
+            </TouchableOpacity>
+        </View>
+    );
+};
 
-            {viewSuggestions && suggestions.length > 0 && 
-                <div className="suggestions">
-                    {suggestions.map((suggestion) => (
-                        <Link 
-                            key={suggestion}
-                            to={`/stockviewpage?search=${suggestion}`}
-                            onClick={() => setInput('')}
-                        >
-                            {suggestion}
-                        </Link>
-                    ))}
-                </div>
-            }
-
-            <button type="submit">Search</button>
-        </form>
-    )
-}
+const styles = StyleSheet.create({
+    container: {
+        padding: 10,
+    },
+    input: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        paddingLeft: 10,
+        marginBottom: 10,
+    },
+    button: {
+        backgroundColor: '#007BFF',
+        padding: 10,
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
+    suggestion: {
+        padding: 10,
+        borderBottomColor: 'gray',
+        borderBottomWidth: 1,
+    },
+});
 
 export default SearchComponent;
