@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, CheckBox } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SearchComponent from './SearchComponent';
+import Login from './Login';
 
 const Navbar = () => {
     const navigation = useNavigation();
@@ -13,7 +14,7 @@ const Navbar = () => {
             </TouchableOpacity>
 
             <SearchComponent />
-            {/* <Login /> */}
+            <Login />
 
             <View style={styles.menuContainer}>
                 <TouchableOpacity>

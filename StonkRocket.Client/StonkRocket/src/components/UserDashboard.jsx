@@ -6,7 +6,7 @@ import "../styling/DashBoardList.css"
 
 
 const UserDashboard = () => {
-    const { user, isLoggedIn } = useContext(AuthContext);
+    const { user, isLoggedIn, getUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
     if (!user) {
@@ -26,7 +26,7 @@ const UserDashboard = () => {
     }
 
     const removeFavourite = (ticker) => {
-        fetch(`${config.stonkRocketApiUrl}/user/stocks/${1}?ticker=${ticker}`, {
+        fetch(`${config.stonkRocketApiUrl}/user/stocks/${user.id}?ticker=${ticker}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -36,11 +36,8 @@ const UserDashboard = () => {
                 if (!response.ok) {
                     throw new Error("Unable to delete with error code" + response.status)
                 }
-                setUser(prevUser => ({
-                    ...prevUser,
-                    stocks: prevUser.stocks.filter(stock => stock.ticker !== ticker)
-                }));
             })
+            .then( () => getUser(user.id) )
             .catch(error => console.log('Error removing data', error))
     }
 
