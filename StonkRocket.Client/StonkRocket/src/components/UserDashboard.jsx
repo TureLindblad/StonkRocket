@@ -10,15 +10,15 @@ const UserDashboard = () => {
     const navigate = useNavigate();
 
     if (!user) {
-        <div>
         return (
+        <div>
             {isLoggedIn ?
                 <div>Loading</div>
                 :
-                <div></div>
+                <div>Not logged in</div>
             }
-        )
         </div>
+        )
     }
 
     const handleClick = (ticker) => {
