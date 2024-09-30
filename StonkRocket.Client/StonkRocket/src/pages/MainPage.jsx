@@ -1,7 +1,7 @@
 import Navbar from "../components/NavBar";
 import StockList from "../components/StockList";
 
-function MainPage(){
+const MainPage = () => {
     return(
         <div>
             <Navbar />
