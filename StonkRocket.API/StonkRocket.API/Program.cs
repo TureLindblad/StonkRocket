@@ -52,6 +52,9 @@ namespace StonkRocket.API
             app.MapGet("/user/{id}", (IUsersService usersService, int id) 
                 => usersService.GetUserByID(id));
 
+            app.MapGet("/user/validate/{username}", (IUsersService usersService, string username)
+                => usersService.ValidateUser(username));
+
             app.MapGet("/stocks", (IUsersService usersService)
                 => usersService.GetStocks());
 

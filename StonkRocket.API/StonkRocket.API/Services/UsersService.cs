@@ -115,5 +115,14 @@ namespace StonkRocket.API.Services
 
             return TypedResults.Ok();
         }
+
+        public Results<Ok<ValidateUserResponse>, BadRequest> ValidateUser(string userName)
+        {
+            var user = _dbContext.Users.FirstOrDefault(user => user.Name == userName);
+
+            if (user == null) return TypedResults.BadRequest();
+
+            return (TypedResults.Ok(new ValidateUserResponse(user.Id)));
+        }
     }
 }

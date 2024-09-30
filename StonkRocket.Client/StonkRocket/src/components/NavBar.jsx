@@ -1,7 +1,7 @@
 import SearchComponent from "./SearchComponent";
 import { Link } from "react-router-dom";
 import "../styling/Navbar.css"
-
+import Login from "./Login";
 const Navbar = () => {
     return (
         <nav className="navbar">
@@ -9,6 +9,7 @@ const Navbar = () => {
                 <img src="/StonkRocket.png" alt="StonkRocketLogo" className="logo"></img>
             </Link>
             <SearchComponent />
+            <Login />
             <div className="menu-container">
                 <input type="checkbox" id="menu-toggle" className="menu-toggle-checkbox" />
                 <label htmlFor="menu-toggle" className="menu-toggle-label">
