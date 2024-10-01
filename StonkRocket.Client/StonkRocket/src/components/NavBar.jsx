@@ -2,6 +2,7 @@ import SearchComponent from "./SearchComponent";
 import { Link } from "react-router-dom";
 import "../styling/Navbar.css"
 import Login from "./Login";
+
 const Navbar = () => {
     return (
         <nav className="navbar">

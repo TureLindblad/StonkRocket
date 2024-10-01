@@ -36,11 +36,14 @@ const StockView = ({ stock }) => {
 
     return (
         <div className="stockViewDiv">
-            {user.stocks.some(userStock => userStock.ticker === stock.results[0].T) ?
-            (
-                <RemoveButton ticker={stock.results[0].T} />
-            ) : (
-                <button className="stockViewButton" onClick={handleFollow}>Follow stock</button>
+            {user && (
+                user.stocks.some(userStock => userStock.ticker === stock.results[0].T) ? (
+                    <RemoveButton ticker={stock.results[0].T} />
+                ) : (
+                    <button className="stockViewButton" onClick={handleFollow}>
+                        Follow stock
+                    </button>
+                )
             )}
             
             <button className="stockViewButton" onClick={() => setShowGraph(prev => !prev)}>Toggle Graph</button>

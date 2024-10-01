@@ -48,25 +48,9 @@ namespace StonkRocket.API
 
             app.UseHttpsRedirection();
 
-            app.MapGet("/user/{id}", (IUsersService usersService, int id) 
-                => usersService.GetUserByID(id));
-
-            app.MapGet("/user/validate/{username}", (IUsersService usersService, string username)
-                => usersService.ValidateUser(username));
-
-            app.MapPost("/user/stocks/{id}", (IUsersService userService, int id, [FromQuery] string ticker)
-                => userService.PostUserStock(ticker, id));
-
-            app.MapDelete("/user/stocks/{id}", (IUsersService userService, int id, [FromQuery] string ticker)
-                 => userService.DeleteUserStock(ticker, id));
-
-            app.MapGet("/stocks", (IUsersService usersService)
-                => usersService.GetStocks());
-
-            app.MapPost("/stock/{ticker}", (IUsersService userService, string ticker)
-                => userService.PostStock(ticker));
-
             app.UseAuthorization();
+
+            app.MapEndpoints();
 
             app.Run();
         }

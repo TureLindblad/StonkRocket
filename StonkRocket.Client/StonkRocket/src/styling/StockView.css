@@ -16,7 +16,7 @@ p {
 }
 
 .stockViewButton{
-    padding: 5px 8px;
+  padding: 5px 8px;
   text-decoration: none;
   color: #007bff;
   background-color: #f8f9fa;
@@ -24,9 +24,26 @@ p {
   transition: background-color 0.3s, color 0.3s;
   float: right;
   margin:0 auto;
+  margin-top: 3px;
+  margin-bottom: 3px;
   max-width: 80%;
   min-width: 10%;
 }
+
+.dashBoardButton{
+    padding: 5px 8px;
+    text-decoration: none;
+    color: #007bff;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+    float: right;
+    margin:0 auto;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    max-width: 80%;
+    min-width: 10%;
+  }
 
 .stockViewButton:hover{
     background-color: #007bff;
