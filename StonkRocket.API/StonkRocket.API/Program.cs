@@ -41,11 +41,10 @@ namespace StonkRocket.API
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                app.UseCors("allowAll");
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-            app.UseCors("allowAll");
 
             app.UseHttpsRedirection();
 
@@ -55,25 +54,17 @@ namespace StonkRocket.API
             app.MapGet("/user/validate/{username}", (IUsersService usersService, string username)
                 => usersService.ValidateUser(username));
 
+            app.MapPost("/user/stocks/{id}", (IUsersService userService, int id, [FromQuery] string ticker)
+                => userService.PostUserStock(ticker, id));
+
+            app.MapDelete("/user/stocks/{id}", (IUsersService userService, int id, [FromQuery] string ticker)
+                 => userService.DeleteUserStock(ticker, id));
+
             app.MapGet("/stocks", (IUsersService usersService)
                 => usersService.GetStocks());
 
-            app.MapPost("/user/stocks/{id}", (IUsersService userService, 
-                int id, 
-                [FromBody] PostUserStockRequest stockRequest) 
-                => userService.PostUserStock(stockRequest.Ticker, id));
-
             app.MapPost("/stock/{ticker}", (IUsersService userService, string ticker)
                 => userService.PostStock(ticker));
-
-            app.MapDelete("/user/stocks/{id}", (IUsersService userService,
-                int id,
-                HttpContext httpContext)
-                => 
-                {
-                    var ticker = httpContext.Request.Query["ticker"].ToString();
-                    userService.DeleteUserStock(ticker, id);
-                });
 
             app.UseAuthorization();
 

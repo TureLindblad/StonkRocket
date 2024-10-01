@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, Button, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import config from "../config";
 import StockRange from "../components/StockRange";
+import { AuthContext } from "../AuthContext";
 
 const StockView = ({ stock }) => {
     const [showGraph, setShowGraph] = useState(false);
+    const { user, getUser } = useContext(AuthContext);
 
     if (!stock) {
         return (
@@ -16,21 +18,23 @@ const StockView = ({ stock }) => {
     }
 
     const handleFollow = () => {
-        fetch(`${config.stonkRocketApiUrl}/user/stocks/${1}`, {
+        fetch(`${config.stonkRocketApiUrl}/user/stocks/${user.id}?ticker=${stock.results[0].T}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ Ticker: stock.results[0].T }),
+                'Content-Type': 'application/json'
+            }
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Stock followed:', data);
+        .then(response => {
+            getUser(user.id)
+            if (!response.ok) {
+                throw new Error(`Unable to post with error code: ${response.status}`)
+            }
         })
         .catch(error => {
-            console.error('Error:', error);
-        });
-    };
+            console.log('Error posting data', error)
+            alert('Error posting data', error)
+        })
+    }
 
     return (
         <View style={styles.stockViewContainer}>

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using StonkRocket.API.Models;
+using System;
 using static StonkRocket.API.DTO.DTO;
-using static StonkRocket.API.Program;
 
 namespace StonkRocket.API.Services
 {
@@ -32,7 +32,7 @@ namespace StonkRocket.API.Services
             return TypedResults.Ok(response);
         }
 
-        public IResult GetStocks() // Change to typed result??
+        public IResult GetStocks()
         {
             var stocks = _dbContext.Stocks;
 
@@ -41,57 +41,37 @@ namespace StonkRocket.API.Services
             return TypedResults.Ok(new GetStocksResponse(response));
         }
 
-        public Results<Ok, NotFound, BadRequest, ProblemHttpResult> PostUserStock(string ticker, int userId)
+        public Results<Ok, NotFound, BadRequest> PostUserStock(string ticker, int userId)
         {
-            var results = UserStockHandler(ticker, userId, "Add");
+            var hasStock = _dbContext.UserStocks
+                .Any(us => us.Stock.Ticker == ticker && us.UserId == userId);
 
-            return results;
-        }
-
-        public Results<Ok, NotFound, BadRequest, ProblemHttpResult> DeleteUserStock(string ticker, int userId)
-        {
-            var results = UserStockHandler(ticker, userId, "Delete");
-
-            return results;
-        }
-
-        private Results<Ok, NotFound, BadRequest, ProblemHttpResult> UserStockHandler(string ticker, int userId, string action)
-        {
-            var user = _dbContext.Users
-                .Include(user => user.UserStocks)
-                .ThenInclude(userStocks => userStocks.Stock)
-                .FirstOrDefault(user => user.Id == userId);
-
-            if (user == null) return TypedResults.NotFound();
-
-            var existingStock = _dbContext.Stocks.Any(s => s.Ticker == ticker);
-
-            if (!existingStock && action == "Add") return TypedResults.BadRequest();
-
-            var hasStock = user.UserStocks.Any(us => us.Stock.Ticker == ticker);
-
-            if (hasStock && action == "Add") return TypedResults.BadRequest();
+            if (hasStock) return TypedResults.BadRequest();
 
             var stock = _dbContext.Stocks.FirstOrDefault(s => s.Ticker == ticker);
 
-            if (action == "Add") 
-            {
-                _dbContext.UserStocks.Add(new UserStock { UserId = userId, StockId = stock.Id });
-            }
-            else if (action == "Delete")
-            {
-                // Needs error handling
-                _dbContext.UserStocks.Remove(_dbContext.UserStocks.FirstOrDefault(us => us.Stock.Ticker == ticker));
-            }
-            else
-            {
-                return TypedResults.Problem("", statusCode: 500);
-            }
+            if (stock == null) return TypedResults.NotFound();
+
+            _dbContext.UserStocks.Add(new UserStock { UserId = userId, StockId = stock.Id });
 
             _dbContext.SaveChanges();
 
             return TypedResults.Ok();
+        }
 
+        public Results<Ok, NotFound> DeleteUserStock(string ticker, int userId)
+        {
+            var userStockToBeDeleted = _dbContext.UserStocks
+                .Include(us => us.Stock)
+                .FirstOrDefault(us => us.Stock.Ticker == ticker && us.UserId == userId);
+
+            if (userStockToBeDeleted == null) return TypedResults.NotFound();
+
+            _dbContext.UserStocks.Remove(userStockToBeDeleted);
+
+            _dbContext.SaveChanges();
+
+            return TypedResults.Ok();
         }
 
         public Results<Ok, NoContent> PostStock(string ticker)

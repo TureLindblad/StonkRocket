@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, Button, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // for navigation in React Native
+import { useNavigation } from '@react-navigation/native';
 import config from "../config";
 import { AuthContext } from "../AuthContext";
 
@@ -12,7 +12,7 @@ const UserDashboard = () => {
     return (
       <View style={styles.container}>
         {isLoggedIn ? (
-          <ActivityIndicator size="large" color="#0000ff" /> // Loading spinner for "Loading"
+          <ActivityIndicator size="large" color="#0000ff" />
         ) : (
           <Text>Not logged in</Text>
         )}
@@ -26,19 +26,22 @@ const UserDashboard = () => {
 
   const removeFavourite = (ticker) => {
     fetch(`${config.stonkRocketApiUrl}/user/stocks/${user.id}?ticker=${ticker}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
     })
-      .then((response) => {
+    .then(response => {
+        getUser(user.id)
         if (!response.ok) {
-          throw new Error('Unable to delete with error code' + response.status);
+            throw new Error(`Unable to delete with error code: ${response.status}`)
         }
-      })
-      .then(() => getUser(user.id))
-      .catch((error) => console.log('Error removing data', error));
-  };
+    })
+    .catch(error => {
+        console.log('Error removing data', error)
+        alert(`Error removing data: ${error.message}`)
+    })
+  }
 
   const renderItem = ({ item }) => (
     <View style={styles.listItem}>

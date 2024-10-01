@@ -6,22 +6,31 @@ import { AuthContext } from "../authContext";
 
 const StockView = ({ stock }) => {
     const [showGraph, setShowGraph] = useState(false)
-    const {user, getUser} = useContext(AuthContext)
+    const { user, getUser } = useContext(AuthContext)
 
     if (!stock) {
         return (
-            <div>Loading</div>)
+            <div>Loading</div>
+        )
     }
 
     const handleFollow = () => {
-        fetch(`${config.stonkRocketApiUrl}/user/stocks/${user.id}`, {
+        fetch(`${config.stonkRocketApiUrl}/user/stocks/${user.id}?ticker=${stock.results[0].T}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ Ticker: stock.results[0].T })
+            }
         })
-        .then( () => getUser(user.id) )
+        .then(response => {
+            getUser(user.id)
+            if (!response.ok) {
+                throw new Error(`Unable to post with error code: ${response.status}`)
+            }
+        })
+        .catch(error => {
+            console.log('Error posting data', error)
+            alert('Error posting data', error)
+        })
     }
 
     return (

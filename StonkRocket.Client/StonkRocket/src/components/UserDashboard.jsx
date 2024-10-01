@@ -32,13 +32,16 @@ const UserDashboard = () => {
                 'Content-Type': 'application/json'
             },
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Unable to delete with error code" + response.status)
-                }
-            })
-            .then( () => getUser(user.id) )
-            .catch(error => console.log('Error removing data', error))
+        .then(response => {
+            getUser(user.id)
+            if (!response.ok) {
+                throw new Error(`Unable to delete with error code: ${response.status}`)
+            }
+        })
+        .catch(error => {
+            console.log('Error removing data', error)
+            alert(`Error removing data: ${error.message}`)
+        })
     }
 
     const listItems = user.stocks.map((stock) =>
