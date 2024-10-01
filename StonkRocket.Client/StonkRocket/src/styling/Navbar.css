@@ -88,6 +88,15 @@ input {
     font-size: 19px;
 }
 
+.login {
+    background-color: ghostwhite;
+    font-size: 1.1em;
+    padding: 1em;
+    border-radius: 10px;
+    min-height: 2em;
+    max-height: 10vh;
+}
+
 @media (max-width: 600px) {
 
     button {

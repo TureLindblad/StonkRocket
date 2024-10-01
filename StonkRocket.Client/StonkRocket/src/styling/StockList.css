@@ -7,6 +7,12 @@
     margin: 10px;
 }
 
+@media (min-width: 850px) {
+    .stockList {
+        margin: 10px 100px;
+    }
+}
+
 .stockList-item {
     background-color: #bcbcbf;
     padding: 20px;

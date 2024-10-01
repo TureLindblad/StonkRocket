@@ -17,8 +17,10 @@ const Login = () => {
         <div>
         {isLoggedIn ?
             <div>
-                <p>Logged in as: {user.name}</p>
-                <button onClick={handleLogout}>Logout</button>
+                <div className="login">
+                    <b>Logged in as {user.name}</b>
+                    <button onClick={handleLogout}>Logout</button>
+                </div>
             </div>
             :
             <div>
