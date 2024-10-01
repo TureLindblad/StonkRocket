@@ -3,6 +3,7 @@ import StockRange from "../components/StockRange";
 import { useState, useContext } from "react";
 import "../styling/StockView.css"
 import { AuthContext } from "../authContext";
+import RemoveButton from "./RemoveButton";
 
 const StockView = ({ stock }) => {
     const [showGraph, setShowGraph] = useState(false)
@@ -35,7 +36,13 @@ const StockView = ({ stock }) => {
 
     return (
         <div className="stockViewDiv">
-            <button className="stockViewButton" onClick={handleFollow}>Follow stock</button>
+            {user.stocks.some(userStock => userStock.ticker === stock.results[0].T) ?
+            (
+                <RemoveButton ticker={stock.results[0].T} />
+            ) : (
+                <button className="stockViewButton" onClick={handleFollow}>Follow stock</button>
+            )}
+            
             <button className="stockViewButton" onClick={() => setShowGraph(prev => !prev)}>Toggle Graph</button>
             {!showGraph ? (
                 <div>

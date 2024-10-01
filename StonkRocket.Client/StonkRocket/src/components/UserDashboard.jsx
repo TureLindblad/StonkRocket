@@ -3,6 +3,7 @@ import config from "../config"
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../authContext";
 import "../styling/DashBoardList.css"
+import RemoveButton from "./RemoveButton";
 
 
 const UserDashboard = () => {
@@ -25,25 +26,6 @@ const UserDashboard = () => {
         navigate(`/stockviewpage?search=${ticker}`)
     }
 
-    const removeFavourite = (ticker) => {
-        fetch(`${config.stonkRocketApiUrl}/user/stocks/${user.id}?ticker=${ticker}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-        .then(response => {
-            getUser(user.id)
-            if (!response.ok) {
-                throw new Error(`Unable to delete with error code: ${response.status}`)
-            }
-        })
-        .catch(error => {
-            console.log('Error removing data', error)
-            alert(`Error removing data: ${error.message}`)
-        })
-    }
-
     const listItems = user.stocks.map((stock) =>
         <li className="dashBoardList" key={stock.ticker}>
             <div>
@@ -59,7 +41,7 @@ const UserDashboard = () => {
                     }}>
                     {stock.ticker}
                 </span>
-                <button className="dashBoardButton" onClick={() => removeFavourite(stock.ticker)}><i className="fa fa-trash"></i> Remove</button>
+                <RemoveButton ticker={stock.ticker} />
             </div>
         </li>
     );

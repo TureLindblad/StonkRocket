@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'rea
 import config from "../config";
 import StockRange from "../components/StockRange";
 import { AuthContext } from "../AuthContext";
+import RemoveButton from './RemoveButton';
 
 const StockView = ({ stock }) => {
     const [showGraph, setShowGraph] = useState(false);
@@ -38,9 +39,14 @@ const StockView = ({ stock }) => {
 
     return (
         <View style={styles.stockViewContainer}>
-            <TouchableOpacity style={styles.button} onPress={handleFollow}>
-                <Text style={styles.buttonText}>Follow Stock</Text>
-            </TouchableOpacity>
+            {user.stocks.some(userStock => userStock.ticker === stock.results[0].T) ?
+            (
+                <RemoveButton ticker={stock.results[0].T} />
+            ) : (
+                <TouchableOpacity style={styles.button} onPress={handleFollow}>
+                    <Text style={styles.buttonText}>Follow Stock</Text>
+                </TouchableOpacity>
+            )}
             <TouchableOpacity style={styles.button} onPress={() => setShowGraph(prev => !prev)}>
                 <Text style={styles.buttonText}>Toggle Graph</Text>
             </TouchableOpacity>
