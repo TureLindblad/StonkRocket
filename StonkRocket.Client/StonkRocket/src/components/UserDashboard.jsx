@@ -1,5 +1,4 @@
 import { useContext } from "react"
-import config from "../config"
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../authContext";
 import "../styling/DashBoardList.css"
@@ -7,7 +6,7 @@ import RemoveButton from "./RemoveButton";
 
 
 const UserDashboard = () => {
-    const { user, isLoggedIn, getUser } = useContext(AuthContext);
+    const { user, isLoggedIn } = useContext(AuthContext);
     const navigate = useNavigate();
 
     if (!user) {
