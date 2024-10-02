@@ -29,19 +29,29 @@ ul {
 }
 
 
-.dashBoardButton{
-  padding: 5px 8px;
-  text-decoration: none;
-  color: #007bff;
-  background-color: #f8f9fa;
-  border-radius: 4px;
-  transition: background-color 0.3s, color 0.3s;
-  float: right;
+.dashBoardButton {
+    padding: 5px 8px;
+    text-decoration: none;
+    color: #007bff;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+    float: right;
 }
 
-.dashBoardButton:hover{
+.dashBoardButton:hover {
     background-color: red;
     color: white;
     cursor: pointer;
     font-weight: bold;
+}
+
+.tickerSpan {
+    cursor: 'pointer';
+    transition: background-color 0.3s ease, color 0.3s ease;
+    vertical-align: middle;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 27px
 }

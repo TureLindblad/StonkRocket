@@ -1,5 +1,6 @@
 import { useContext, useState } from "react"
 import { AuthContext } from "../authContext";
+import "../styling/Navbar.css"
 
 const Login = () => {
     const { login, logout, isLoggedIn, user } = useContext(AuthContext);
@@ -19,7 +20,7 @@ const Login = () => {
             <div>
                 <div className="login">
                     <b>Logged in as {user.name}</b>
-                    <button onClick={handleLogout}>Logout</button>
+                    <button className="loginButton" onClick={handleLogout}>Logout</button>
                 </div>
             </div>
             :
@@ -30,7 +31,7 @@ const Login = () => {
                     onChange={(e) => setUserName(e.target.value)}
                     placeholder="Username" 
                 />
-                <button onClick={handleLogin}>Login</button>
+                <button className="loginButton" onClick={handleLogin}>Login</button>
             </div>
         }
         </div>

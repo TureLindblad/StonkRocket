@@ -65,7 +65,7 @@ const SearchComponent = () => {
                 </div>
             }
 
-            <button type="submit">Search</button>
+            <button className="searchButton" type="submit">Search</button>
         </form>
     )
 }

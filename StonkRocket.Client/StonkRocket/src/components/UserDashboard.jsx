@@ -28,16 +28,7 @@ const UserDashboard = () => {
     const listItems = user.stocks.map((stock) =>
         <li className="dashBoardList" key={stock.ticker}>
             <div>
-                <span onClick={() => handleClick(stock.ticker)}
-                    style={{
-                        cursor: 'pointer',
-                        transition: 'background-color 0.3s ease, color 0.3s ease',
-                        verticalAlign: 'middle',
-                        position: 'absolute',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        fontSize: '25px',
-                    }}>
+                <span className="tickerSpan" onClick={() => handleClick(stock.ticker)}>
                     {stock.ticker}
                 </span>
                 <RemoveButton ticker={stock.ticker} />

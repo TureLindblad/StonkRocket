@@ -46,7 +46,7 @@ input {
     position: relative;
     background-color: #0a4e75;
     border: none;
-    font-size: 19px;
+    font-size: 15px;
     color: #FFFFFF;
     padding: 5px;
     height: 35px;
@@ -97,12 +97,33 @@ input {
     max-height: 10vh;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 628px) {
 
     button {
         margin-left: 5px;
+        max-width: 3px;
+    }
+    b{
+        font-size: 8px;
     }
 
+    .login{
+        width: 60px;
+        height: fit-content;
+    }
+    .login button{
+        font-size: 7px;
+        max-height: 20px;
+        max-width: 34px;
+    }
+    Button.searchButton{
+        max-width: 50px;
+        font-size: smaller;
+        margin:3px;
+    }
+    input{
+        font-size: smaller;
+    }
 }
 
 .menu-container {
@@ -133,7 +154,7 @@ input {
     color: white;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
     .menu-toggle-label {
         display: block;
     }
