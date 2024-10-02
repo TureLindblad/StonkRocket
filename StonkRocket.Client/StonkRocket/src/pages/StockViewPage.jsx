@@ -11,6 +11,7 @@ const useQuery = () => {
 const StockViewPage = () => {
     const search = useQuery().get('search');
     const [stock, setStock] = useState();
+    const [notFound, setNotFound] = useState()
 
     useEffect( () => {
         fetch(`${config.apiUrl}/aggs/ticker/${search}/prev?apiKey=${config.apiKey}`)
@@ -22,13 +23,20 @@ const StockViewPage = () => {
         })
         .then(data => {
             if (data.results) {
-                setStock(data)
-                updateDb(data.results[0].T)
+                setNotFound(false)
+                setTimeout(() => {
+                    setStock(data);
+                    updateDb(data.results[0].T);
+                }, 500);
             } else {
+                setNotFound(true)
                 setStock(null)
             }
         })
-        .catch(error => console.log('Error loading data', error))
+        .catch(error => {
+            console.log('Error loading data', error)
+            setNotFound(true)
+        })
         }, [search])
 
     const updateDb = (ticker) => {
@@ -47,10 +55,10 @@ const StockViewPage = () => {
     return(
         <div>
             <Navbar />
-            {stock ? 
-                <StockView stock={stock} />
-                :
+            {notFound ?
                 <h1>Stock not found</h1>
+                :
+                <StockView stock={stock} />
             }
         </div>
     )
