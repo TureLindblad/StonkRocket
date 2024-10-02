@@ -15,7 +15,7 @@ const UserDashboard = () => {
             {isLoggedIn ?
                 <div>Loading</div>
                 :
-                <div>Not logged in</div>
+                <div><h1>Not logged in</h1></div>
             }
         </div>
         )
